@@ -1,6 +1,7 @@
 package cnicommands
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -44,9 +45,11 @@ func CmdAdd(args *skel.CmdArgs) error {
 		"func", "cmdAdd",
 		"args.Path", args.Path, "args.StdinData", string(args.StdinData), "args.Args", args.Args)
 
+	argsb, _ := json.Marshal(args)
+
 	netConf, err := config.LoadConf(args.StdinData)
 	if err != nil {
-		return fmt.Errorf("SRIOV-CNI failed to load netconf: %v [args: %v]", err, *args)
+		return fmt.Errorf("SRIOV-CNI failed to load netconf [args: %s]: %v ", string(argsb), err)
 	}
 
 	envArgs, err := getEnvArgs(args.Args)

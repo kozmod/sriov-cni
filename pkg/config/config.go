@@ -41,12 +41,12 @@ func LoadConf(bytes []byte) (*sriovtypes.NetConf, error) {
 		// Get rest of the VF information
 		pfName, vfID, err := getVfInfo(n.DeviceID)
 		if err != nil {
-			return nil, fmt.Errorf("LoadConf(): failed to get VF information: %q, [%v]", err, *n)
+			return nil, fmt.Errorf("LoadConf(): failed to get VF information: [in: %s ]: %q", string(bytes), err)
 		}
 		n.VFID = vfID
 		n.Master = pfName
 	} else {
-		return nil, fmt.Errorf("LoadConf(): VF pci addr is required")
+		return nil, fmt.Errorf("LoadConf(): VF pci addr is required [in: %s ]", string(bytes))
 	}
 
 	allocator := utils.NewPCIAllocator(DefaultCNIDir)
