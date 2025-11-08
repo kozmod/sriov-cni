@@ -43,7 +43,7 @@ func LoadConf(bytes []byte) (*sriovtypes.NetConf, error) {
 		// Get rest of the VF information
 		pfName, vfID, err := getVfInfo(n.DeviceID)
 		if err != nil {
-			return nil, fmt.Errorf("LoadConf(): failed to get VF information: %q", err)
+			return nil, fmt.Errorf("LoadConf(): failed to get VF information: %q, [%v]", err, *n)
 		}
 		n.VFID = vfID
 		n.Master = pfName
