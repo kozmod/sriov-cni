@@ -36,8 +36,6 @@ func LoadConf(bytes []byte) (*sriovtypes.NetConf, error) {
 		return nil, fmt.Errorf("LoadConf(): failed to load netconf: %v", err)
 	}
 
-	logging.Info(fmt.Sprintf("⚠️ LoadConf() -> NetConf: %v", *n))
-
 	// DeviceID takes precedence; if we are given a VF pciaddr then work from there
 	if n.DeviceID != "" {
 		// Get rest of the VF information

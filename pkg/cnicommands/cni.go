@@ -44,8 +44,6 @@ func CmdAdd(args *skel.CmdArgs) error {
 		"func", "cmdAdd",
 		"args.Path", args.Path, "args.StdinData", string(args.StdinData), "args.Args", args.Args)
 
-	logging.Info(fmt.Sprintf("⚠️ CmdAdd(args): %v", *args))
-
 	netConf, err := config.LoadConf(args.StdinData)
 	if err != nil {
 		return fmt.Errorf("SRIOV-CNI failed to load netconf: %v [args: %v]", err, *args)
