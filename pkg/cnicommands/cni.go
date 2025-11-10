@@ -83,7 +83,8 @@ func CmdAdd(args *skel.CmdArgs) error {
 	sm := sriov.NewSriovManager()
 	err = sm.FillOriginalVfInfo(netConf)
 	if err != nil {
-		return fmt.Errorf("failed to get original vf information: %v", err)
+		b, _ := json.Marshal(netConf)
+		return fmt.Errorf("failed to get original vf information: %v - [ns: %s]", err, string(b))
 	}
 	defer func() {
 		if err != nil {
@@ -100,7 +101,7 @@ func CmdAdd(args *skel.CmdArgs) error {
 	}()
 	if err := sm.ApplyVFConfig(netConf); err != nil {
 		b, _ := json.Marshal(netConf)
-		return fmt.Errorf("SRIOV-CNI failed to configure VF %q [ns: %s]", err, string(b))
+		return fmt.Errorf("SRIOV-CNI failed to configure VF %q - [ns: %s]", err, string(b))
 	}
 
 	result := &current.Result{}
