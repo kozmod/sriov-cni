@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	sriovConfigured = "/c"
+	sriovConfigured = "/sriov_numvfs"
 	// NetDirectory sysfs net directory
 	NetDirectory = "/tmppci/class/net"
 	//NetDirectory = "/sys/class/net"
