@@ -99,7 +99,8 @@ func CmdAdd(args *skel.CmdArgs) error {
 		}
 	}()
 	if err := sm.ApplyVFConfig(netConf); err != nil {
-		return fmt.Errorf("SRIOV-CNI failed to configure VF %q", err)
+		b, _ := json.Marshal(netConf)
+		return fmt.Errorf("SRIOV-CNI failed to configure VF %q [ns: %s]", err, string(b))
 	}
 
 	result := &current.Result{}
