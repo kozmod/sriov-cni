@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net"
 	"os"
@@ -97,14 +98,17 @@ func GetVfid(addr, pfName string) (int, error) {
 	if err != nil {
 		return id, err
 	}
+	var errs []error
 	for vf := 0; vf < vfTotal; vf++ {
 		vfDir := filepath.Join(NetDirectory, pfName, "device", fmt.Sprintf("virtfn%d", vf))
 		_, err := os.Lstat(vfDir)
 		if err != nil {
+			errs = append(errs, fmt.Errorf("%d vfDir [%s] : %w", vf, vfDir, err))
 			continue
 		}
 		pciinfo, err := os.Readlink(vfDir)
 		if err != nil {
+			errs = append(errs, fmt.Errorf("%d Readlink [%s] : %w", vf, vfDir, err))
 			continue
 		}
 		pciaddr := filepath.Base(pciinfo)
@@ -112,7 +116,7 @@ func GetVfid(addr, pfName string) (int, error) {
 			return vf, nil
 		}
 	}
-	return id, fmt.Errorf("unable to get VF ID with PF: %s and VF pci address %v", pfName, addr)
+	return id, fmt.Errorf("unable to get VF ID with PF: %s and VF pci address %v [errors: %w]", pfName, addr, errors.Join(errs...))
 }
 
 // GetPfName returns PF net device name of a given VF pci address
