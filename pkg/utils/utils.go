@@ -15,11 +15,13 @@ import (
 )
 
 var (
-	sriovConfigured = "/sriov_numvfs"
+	sriovConfigured = "/c"
 	// NetDirectory sysfs net directory
-	NetDirectory = "/sys/class/net"
+	NetDirectory = "/tmppci/class/net"
+	//NetDirectory = "/sys/class/net"
 	// SysBusPci is sysfs pci device directory
-	SysBusPci = "/sys/bus/pci/devices"
+	SysBusPci = "/tmppci/devices"
+	//SysBusPci = "/sys/bus/pci/devices"
 	// SysV4ArpNotify is the sysfs IPv4 ARP Notify directory
 	SysV4ArpNotify = "/proc/sys/net/ipv4/conf/"
 	// SysV6NdiscNotify is the sysfs IPv6 Neighbor Discovery Notify directory

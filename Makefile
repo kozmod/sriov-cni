@@ -52,11 +52,6 @@ build: | $(BUILDDIR) ; $(info Building $(BINARY_NAME)...) @ ## Build SR-IOV CNI 
 	$Q cd $(CURDIR)/cmd/$(BINARY_NAME) && $(GO_BUILD_OPTS) go build -ldflags '$(GO_LDFLAGS)' $(GO_FLAGS) -o $(BUILDDIR)/$(BINARY_NAME) $(GO_TAGS) -v
 	$(info Done!)
 
-.PHONY: build.dlv
-build.dlv: | $(BUILDDIR) ; $(info Building $(BINARY_NAME)...) @ ## Build SR-IOV CNI plugin
-	$Q cd $(CURDIR)/cmd/$(BINARY_NAME) && $(GO_BUILD_OPTS) go build -ldflags '$(GO_LDFLAGS)' -gcflags "all=-N -l" $(GO_FLAGS) -o $(BUILDDIR)/$(BINARY_NAME) $(GO_TAGS) -v
-	$(info Done!)
-
 # Tools
 GOLANGCI_LINT = $(BINDIR)/golangci-lint
 GOLANGCI_LINT_VERSION = v1.64.7
