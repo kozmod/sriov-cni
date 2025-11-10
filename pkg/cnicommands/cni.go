@@ -12,8 +12,6 @@ import (
 	current "github.com/containernetworking/cni/pkg/types/100"
 	"github.com/containernetworking/plugins/pkg/ipam"
 	"github.com/containernetworking/plugins/pkg/ns"
-	"github.com/vishvananda/netlink"
-
 	"github.com/k8snetworkplumbingwg/sriov-cni/pkg/config"
 	"github.com/k8snetworkplumbingwg/sriov-cni/pkg/logging"
 	"github.com/k8snetworkplumbingwg/sriov-cni/pkg/sriov"
@@ -81,28 +79,28 @@ func CmdAdd(args *skel.CmdArgs) error {
 	defer netns.Close()
 
 	sm := sriov.NewSriovManager()
-	err = sm.FillOriginalVfInfo(netConf)
-	if err != nil {
-		b, _ := json.Marshal(netConf)
-		return fmt.Errorf("failed to get original vf information: %v - [ns: %s]", err, string(b))
-	}
-	defer func() {
-		if err != nil {
-			err := netns.Do(func(_ ns.NetNS) error {
-				_, err := netlink.LinkByName(args.IfName)
-				return err
-			})
-			if err == nil {
-				_ = sm.ReleaseVF(netConf, args.IfName, netns)
-			}
-			// Reset the VF if failure occurs before the netconf is cached
-			_ = sm.ResetVFConfig(netConf)
-		}
-	}()
-	if err := sm.ApplyVFConfig(netConf); err != nil {
-		b, _ := json.Marshal(netConf)
-		return fmt.Errorf("SRIOV-CNI failed to configure VF %q - [ns: %s]", err, string(b))
-	}
+	//err = sm.FillOriginalVfInfo(netConf)
+	//if err != nil {
+	//	b, _ := json.Marshal(netConf)
+	//	return fmt.Errorf("failed to get original vf information: %v - [ns: %s]", err, string(b))
+	//}
+	//defer func() {
+	//	if err != nil {
+	//		err := netns.Do(func(_ ns.NetNS) error {
+	//			_, err := netlink.LinkByName(args.IfName)
+	//			return err
+	//		})
+	//		if err == nil {
+	//			_ = sm.ReleaseVF(netConf, args.IfName, netns)
+	//		}
+	//		// Reset the VF if failure occurs before the netconf is cached
+	//		_ = sm.ResetVFConfig(netConf)
+	//	}
+	//}()
+	//if err := sm.ApplyVFConfig(netConf); err != nil {
+	//	b, _ := json.Marshal(netConf)
+	//	return fmt.Errorf("SRIOV-CNI failed to configure VF %q - [ns: %s]", err, string(b))
+	//}
 
 	result := &current.Result{}
 	result.Interfaces = []*current.Interface{{
