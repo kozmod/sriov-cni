@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"os"
 	"strings"
 	"time"
 
@@ -214,7 +216,30 @@ func CmdAdd(args *skel.CmdArgs) error {
 		})
 	}
 
-	return types.PrintResult(result, netConf.CNIVersion)
+	mrs := &MyResult{
+		Result: result,
+		VfID:   netConf.VFID,
+	}
+
+	return types.PrintResult(mrs, netConf.CNIVersion)
+}
+
+type MyResult struct {
+	types.Result
+	VfID int `json:"vfid"`
+}
+
+func (r *MyResult) Print() error {
+	return r.PrintTo(os.Stdout)
+}
+
+func (r *MyResult) PrintTo(writer io.Writer) error {
+	data, err := json.MarshalIndent(r, "", "    ")
+	if err != nil {
+		return err
+	}
+	_, err = writer.Write(data)
+	return err
 }
 
 func CmdDel(args *skel.CmdArgs) error {
