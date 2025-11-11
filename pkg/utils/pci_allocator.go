@@ -79,6 +79,15 @@ func (p *PCIAllocator) SaveAllocatedPCI(pciAddress, ns string) error {
 		return fmt.Errorf("failed to write used PCI address lock file in the path(%q): %v", path, err)
 	}
 
+	val, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("failed to read PCI address lock file in the path(%q): %v", path, err)
+	}
+	logging.Debug("!!! PCI address lock",
+		"func", "SaveAllocatedPCI",
+		"val", string(val),
+	)
+
 	return err
 }
 
