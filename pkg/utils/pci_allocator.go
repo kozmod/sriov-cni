@@ -85,6 +85,7 @@ func (p *PCIAllocator) SaveAllocatedPCI(pciAddress, ns string) error {
 	}
 	logging.Debug("!!! PCI address lock",
 		"func", "SaveAllocatedPCI",
+		"path", path,
 		"val", string(val),
 	)
 
